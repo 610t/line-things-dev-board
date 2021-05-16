@@ -19,6 +19,11 @@ LINE ThingsやBluetooth LEの使い方などに関してはそれぞれのペー
 * 基板上の**P2**と**P6**の説明が逆になっています。正しくは **P2** が I2C(5V) で、**P6** が I2C(3.3V) です。
 * 基板上の**P7**と**P8**は説明が逆になっています。正しくは **P7** は Grove-I/O で、**P8** が Grove-UART です。
 
+### [重要] 加速度センサを使う方への注意点
+
+製造ロットにより、加速度センサを搭載していないもの、または動作しないものがります。
+バージョン3以降のデフォルトファームウェアでは、加速度センサを検出できない場合、「-」を表示しています。
+
 ## 目次
 
 [Documentation on Github Pages](https://line.github.io/line-things-dev-board/)
@@ -55,7 +60,7 @@ LIFFのJavaScript APIから、このデフォルトファームウェアの機�
 
 デフォルトファームウェアの仕様については、[デフォルトファームウェアについて](docs/default-firmware.md)を参照してください。
 JavaScriptライブラリについては、[JavaScript から LINE Things Board を制御する](docs/js-control.md)を参照してください。
-デフォルトファームウェアを利用したLIFFは `liff-app/linethings-dev-default/` と `liff-app/linethings-js-control/` に格納されています。
+デフォルトファームウェアを利用したLIFFは [`liff-app/linethings-dev-default/`](liff-app/linethings-dev-default/) と [`liff-app/linethings-dev-js-control/`](liff-app/linethings-dev-js-control/) に格納されています。
 
 このファームウェアは Advertising packet の Service UUID を LIFF 上から書き換える機能を持っています。
 この機能は LINE Developers から Service UUID を取得して、LINE Things developers trial の独自デバイスを構築する際に、
@@ -63,7 +68,7 @@ JavaScriptライブラリについては、[JavaScript から LINE Things Board 
 
 #### LIFFからService UUIDの変更と初期化
 LINE Things Developer Trialでは、プロダクト登録とそれに対応したGATT Service UUIDの設定が必要です。
-デフォルトファームウェアと LIFF (`liff-app/linethings-dev-default/`, `liff-app/linethings-js-control/`) では、LIFF上からService UUIDを書き換えることが可能です。
+デフォルトファームウェアと LIFF ([`liff-app/linethings-dev-default/`](liff-app/linethings-dev-default/), [`liff-app/linethings-dev-js-control/`](liff-app/linethings-dev-js-control/)) では、LIFF上からService UUIDを書き換えることが可能です。
 この機能を用いると、Service UUIDの書換の際にデバイスのファームウェアの書き換えが不要となります。
 
 ##### LIFFからService UUIDを書き換える
@@ -80,15 +85,14 @@ Dev boardのディスプレイに「BLE advertising uuid changed from LIFF....�
 ### ファームウェアをカスタマイズする
 [Adafruitがオープンソースで公開しているArduinoコア](https://github.com/adafruit/Adafruit_nRF52_Arduino)を利用して、Arduino IDEから簡単に開発することが可能です。
 
-ハードウェアの仕様については、[ハードウェア構成](#ハードウェア構成)を参考にしてください。
-ファームウェアの書き込み方法に関しては[ファームウェア書き込み方法](docs/update-firmware.md)を参考にしてください。
-サンプルコードについては、[サンプルコード](docs/examples.md)にそれぞれのデバイスを制御する方法を載せています。
-
-デフォルトファームウェアに戻したい場合には、`arduino/linethings-dev-default/linethings-dev-default.ino` を使用してください。
-このサンプルでは `things_temp_lib`、`SparkFun MMA8452Q Accelerometer`、`Adafruit SSD1306`、`Adafruit GFX Library` を使用しています。`things_temp_lib` は `library/things_temp_lib` をzipファイルに圧縮して、ライブラリをインクルードからインストールしてください。それ以外のライブラリはライブラリを管理からインストールしてください。
-
 [LINE Things Starter](https://github.com/line/line-things-starter) も、LINE Things dev board に対応しています。
 Starter のリポジトリから、LINE Things dev board 用のファームウェアを書き込んでください。
+
+デフォルトファームウェアに戻したい場合には、[`arduino/linethings-dev-default/`](arduino/linethings-dev-default) を使用してください。
+
+ハードウェアの仕様については、[ハードウェア構成](#ハードウェア構成)を参考にしてください。
+ファームウェアの書き込み方法に関しては、[ファームウェア書き込み方法](docs/update-firmware.md)を参考にしてください。
+[サンプルコード](docs/examples.md)にそれぞれのデバイスを制御する方法を載せています。
 
 ---
 
@@ -151,7 +155,7 @@ AdafruitのArduinoコアを利用可能でArduino IDEを使用して開発する
 Arduinoではなくご自身でフルスクラッチ開発も可能となっています。マザーボードに挿して使用することも、CPUボード単体で使用することも可能です。
 
 #### ピンアサイン
-![cpuboard_pinassign](https://user-images.githubusercontent.com/135050/58088655-1a9e4380-7bfe-11e9-90d4-530f84e56242.png)
+![cpuboard_pinassign](https://user-images.githubusercontent.com/1433021/58677475-093ffe80-8397-11e9-89ba-591c28a5f1ab.png)
 
 #### 技術仕様
 CPUボード単体での仕様です。マザーボードに接続して使用する場合、そちらの仕様が適用されます。
@@ -241,6 +245,11 @@ SparkFun MMA8452Q Accelerometerライブラリを使うと簡単な制御で使�
 | SCL | 26 |
 | SDA | 25 |
 
+#### 注意事項
+* 製造ロットにより、加速度センサを搭載していないもの、または動作しないものがります。
+バージョン3以降のデフォルトファームウェアでは、加速度センサを検出できない場合、「-」を表示しています。
+
+
 ### モーター
 モータードライバ(DRV8830)を2つ搭載することが可能です。I2Cで接続されており、
 簡単な制御で使うことができます。モーターは *CN1* と *CN2* に接続することが可能です。I2Cのアドレスは0x60(CN1)、0x62(CN2)となります。
@@ -326,11 +335,11 @@ SparkFun MMA8452Q Accelerometerライブラリを使うと簡単な制御で使�
 | 6 | RESET | - |
 | 7 | I/O | 5 |
 | 8 | I/O | 26(SCL) |
-| 9 | I/O | 12 |
+| 9 | I/O | 12(SCK) |
 | 10 | I/O | 25(SDA) |
-| 11 | I/O | 13 |
+| 11 | I/O | 13(MOSI) |
 | 12 | I/O | 16 |
-| 13 | I/O | 14 |
+| 13 | I/O | 14(MISO) |
 | 14 | I/O | 15 |
 | 15 | I/O | 8(RxD) |
 | 16 | O | 11(LED-DS3) |
